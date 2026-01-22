@@ -1258,9 +1258,9 @@
                     return result;
                 },
 
-                // Load store state via resource (read-only, faster than tool)
+                // Load store state via tool call
                 async loadStore() {
-                    const result = await this.readResource('store://state');
+                    const result = await this.callTool('get_store_state');
                     
                     this.products = result.products || [];
                     this.generation = result.generation ?? 1;
