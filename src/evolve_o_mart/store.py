@@ -276,7 +276,7 @@ Make it funny but not crude. Parody "as seen on TV" products."""
         result = await ctx.sample(
             messages=prompt,
             result_type=EvolutionResult,
-            max_tokens=1024,
+            max_tokens=10240,
         )
         return result.result
 
