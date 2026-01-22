@@ -1,0 +1,12 @@
+.pytest_cache
+.ruff_cache
+.mypy_cache
+.venv
+venv
+__pycache__
+build
+dist
+reference
+**/*.old.py
+.store_data
+.env

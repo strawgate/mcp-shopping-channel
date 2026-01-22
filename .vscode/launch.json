@@ -1,0 +1,77 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Serve (HTTP)",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "evolve_o_mart.server",
+      "args": ["serve", "--http"],
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/src"
+      },
+      "justMyCode": false
+    },
+    {
+      "name": "Serve (stdio)",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "evolve_o_mart.server",
+      "args": ["serve"],
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/src"
+      },
+      "justMyCode": false
+    },
+    {
+      "name": "Status",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "evolve_o_mart.server",
+      "args": ["status"],
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/src"
+      },
+      "justMyCode": false
+    },
+    {
+      "name": "Reset Store",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "evolve_o_mart.server",
+      "args": ["reset", "--yes"],
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/src"
+      },
+      "justMyCode": false
+    },
+    {
+      "name": "pytest",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "pytest",
+      "args": ["-v"],
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/src"
+      },
+      "justMyCode": false
+    },
+    {
+      "name": "pytest (current file)",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "pytest",
+      "args": ["${file}", "-v"],
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/src"
+      },
+      "justMyCode": false
+    }
+  ]
+}
