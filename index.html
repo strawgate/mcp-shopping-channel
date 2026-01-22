@@ -133,10 +133,41 @@
             border-top: 2px solid var(--tv-purple);
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 1.5rem;
+            justify-content: space-between;
+            gap: 1rem;
             z-index: 9998;
             backdrop-filter: blur(10px);
+        }
+
+        .footer-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .footer-center {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .footer-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .powered-by {
+            font-family: 'VT323', monospace;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .powered-by:hover {
+            color: var(--tv-blue);
         }
 
         .countdown-label {
@@ -303,17 +334,17 @@
         }
 
         .product-card.is-leader::before {
-            content: "🔥 ON SALE";
+            content: "⭐ TOP PICK";
             position: absolute;
             top: 1rem;
-            right: -2rem;
+            left: -2rem;
             background: var(--tv-green);
             color: #000;
             font-family: 'Bebas Neue', sans-serif;
             font-size: 0.9rem;
             letter-spacing: 0.1em;
             padding: 0.3rem 2.5rem;
-            transform: rotate(45deg);
+            transform: rotate(-45deg);
             z-index: 10;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
@@ -331,6 +362,7 @@
             align-items: center;
             justify-content: center;
             border-bottom: 2px solid #2a2a3d;
+            position: relative;
         }
 
         .ascii-container pre {
@@ -346,6 +378,225 @@
 
         .product-card.is-leader .ascii-container {
             color: var(--tv-yellow);
+        }
+
+        .ascii-expand-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid var(--tv-purple);
+            color: var(--tv-purple);
+            padding: 0.25rem 0.5rem;
+            font-family: 'VT323', monospace;
+            font-size: 0.8rem;
+            cursor: pointer;
+            border-radius: 4px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            z-index: 5;
+        }
+
+        .ascii-container:hover .ascii-expand-btn,
+        .ascii-expand-btn:focus {
+            opacity: 1;
+        }
+
+        .ascii-expand-btn:hover {
+            background: var(--tv-purple);
+            color: #000;
+        }
+
+        /* ASCII Modal */
+        .ascii-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            padding: 1rem;
+        }
+
+        .ascii-modal {
+            background: #000;
+            border: 2px solid var(--tv-green);
+            border-radius: 8px;
+            max-width: 95vw;
+            max-height: 90vh;
+            overflow: auto;
+            position: relative;
+        }
+
+        .ascii-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--tv-green);
+            position: sticky;
+            top: 0;
+            background: #000;
+        }
+
+        .ascii-modal-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.2rem;
+            color: var(--tv-green);
+        }
+
+        .ascii-modal-close {
+            background: none;
+            border: 1px solid var(--tv-red);
+            color: var(--tv-red);
+            padding: 0.25rem 0.75rem;
+            font-family: 'VT323', monospace;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .ascii-modal-close:hover {
+            background: var(--tv-red);
+            color: #000;
+        }
+
+        .ascii-modal-content {
+            padding: 1rem;
+            font-family: 'VT323', monospace;
+            font-size: 0.9rem;
+            line-height: 1.15;
+            color: var(--tv-green);
+            white-space: pre;
+            overflow-x: auto;
+        }
+
+        /* About Modal */
+        .about-btn {
+            background: none;
+            border: 1px solid var(--tv-blue);
+            color: var(--tv-blue);
+            padding: 0.25rem 0.75rem;
+            font-family: 'VT323', monospace;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-left: auto;
+        }
+
+        .about-btn:hover {
+            background: var(--tv-blue);
+            color: #000;
+        }
+
+        .about-modal {
+            background: var(--bg-card);
+            border: 2px solid var(--tv-blue);
+            border-radius: 12px;
+            max-width: 600px;
+            width: 95vw;
+            max-height: 85vh;
+            overflow: auto;
+            position: relative;
+        }
+
+        .about-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid #2a2a3d;
+            position: sticky;
+            top: 0;
+            background: var(--bg-card);
+        }
+
+        .about-modal-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            color: var(--tv-yellow);
+        }
+
+        .about-modal-close {
+            background: none;
+            border: 1px solid var(--tv-red);
+            color: var(--tv-red);
+            padding: 0.25rem 0.75rem;
+            font-family: 'VT323', monospace;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .about-modal-close:hover {
+            background: var(--tv-red);
+            color: #000;
+        }
+
+        .about-modal-content {
+            padding: 1.25rem;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--text-muted);
+        }
+
+        .about-modal-content h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.2rem;
+            color: var(--tv-green);
+            margin: 1.25rem 0 0.5rem 0;
+            letter-spacing: 0.05em;
+        }
+
+        .about-modal-content h3:first-child {
+            margin-top: 0;
+        }
+
+        .about-modal-content p {
+            margin-bottom: 0.75rem;
+        }
+
+        .about-modal-content code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.15rem 0.4rem;
+            border-radius: 3px;
+            font-family: 'VT323', monospace;
+            color: var(--tv-purple);
+        }
+
+        .about-modal-content a {
+            color: var(--tv-blue);
+            text-decoration: none;
+        }
+
+        .about-modal-content a:hover {
+            text-decoration: underline;
+        }
+
+        .about-modal-content ul {
+            margin: 0.5rem 0 0.75rem 1.5rem;
+        }
+
+        .about-modal-content li {
+            margin-bottom: 0.35rem;
+        }
+
+        .arch-diagram {
+            background: #000;
+            border: 1px solid #2a2a3d;
+            border-radius: 6px;
+            padding: 1rem;
+            font-family: 'VT323', monospace;
+            font-size: 0.8rem;
+            line-height: 1.3;
+            color: var(--tv-green);
+            white-space: pre;
+            overflow-x: auto;
+            margin: 1rem 0;
         }
 
         .product-info {
@@ -569,27 +820,32 @@
 
             .evolution-countdown {
                 flex-wrap: wrap;
-                gap: 0.75rem;
+                gap: 0.5rem;
                 padding: 0.5rem 1rem;
+            }
+
+            .footer-left, .footer-right {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .footer-center {
+                width: 100%;
+                flex-wrap: wrap;
+                gap: 0.5rem;
             }
 
             .countdown-bar {
                 width: 100%;
                 max-width: none;
-                order: 2;
-            }
-
-            .countdown-label {
-                order: 1;
-            }
-
-            .countdown-text {
-                order: 3;
             }
 
             .evolve-button {
-                order: 3;
                 width: 100%;
+            }
+
+            .powered-by {
+                font-size: 0.8rem;
             }
         }
     </style>
@@ -637,6 +893,11 @@
                             v<span x-text="product.version"></span>
                         </div>
                         <div class="ascii-container" :class="getAsciiSizeClass(product.ascii_art)">
+                            <button 
+                                class="ascii-expand-btn" 
+                                @click.stop="openAsciiModal(product)"
+                                title="View full size"
+                            >⛶ EXPAND</button>
                             <pre x-text="product.ascii_art"></pre>
                         </div>
                         <div class="product-info">
@@ -675,23 +936,109 @@
 
         <!-- Floating Bottom Bar -->
         <div class="evolution-countdown" x-show="!loading">
-            <a href="https://gofastmcp.com" target="_blank" class="powered-by">100% FastMCP</a>
-            <div class="countdown-label" x-show="votesToEvolve > 0">⚡ EVOLUTION</div>
-            <div class="countdown-bar" x-show="votesToEvolve > 0">
-                <div class="countdown-fill" :style="'width: ' + evolutionProgress + '%'"></div>
+            <div class="footer-left">
+                <a href="https://gofastmcp.com" target="_blank" class="powered-by">Powered by FastMCP; Hosted on Prefect Horizon</a>
             </div>
-            <div class="countdown-text" x-show="votesToEvolve > 0 && votesUntilEvolution > 0">
-                <span x-text="votesThisGeneration"></span>/<span x-text="votesToEvolve"></span>
+            <div class="footer-center">
+                <div class="countdown-label" x-show="votesToEvolve > 0">⚡ EVOLUTION</div>
+                <div class="countdown-bar" x-show="votesToEvolve > 0">
+                    <div class="countdown-fill" :style="'width: ' + evolutionProgress + '%'"></div>
+                </div>
+                <div class="countdown-text" x-show="votesToEvolve > 0 && votesUntilEvolution > 0">
+                    <span x-text="votesThisGeneration"></span>/<span x-text="votesToEvolve"></span>
+                </div>
+                <button 
+                    x-show="votesToEvolve > 0 && votesUntilEvolution === 0"
+                    class="evolve-button"
+                    :disabled="evolving"
+                    @click.stop.prevent="triggerEvolution()"
+                >
+                    <span x-show="!evolving">🧬 EVOLVE NOW!</span>
+                    <span x-show="evolving">🧬 EVOLVING (10-20s)...</span>
+                </button>
             </div>
-            <button 
-                x-show="votesToEvolve > 0 && votesUntilEvolution === 0"
-                class="evolve-button"
-                :disabled="evolving"
-                @click.stop.prevent="triggerEvolution()"
-            >
-                <span x-show="!evolving">🧬 EVOLVE NOW!</span>
-                <span x-show="evolving">🧬 EVOLVING (10-20s)...</span>
-            </button>
+            <div class="footer-right">
+                <button class="about-btn" @click="showAbout = true">? ABOUT</button>
+            </div>
+        </div>
+
+        <!-- ASCII Art Modal -->
+        <div 
+            class="ascii-modal-overlay" 
+            x-show="asciiModal.show" 
+            x-transition:enter="transition ease-out duration-200"
+            x-transition:leave="transition ease-in duration-150"
+            @click="closeAsciiModal()"
+            @keydown.escape.window="closeAsciiModal()"
+        >
+            <div class="ascii-modal" @click.stop>
+                <div class="ascii-modal-header">
+                    <span class="ascii-modal-title" x-text="asciiModal.name"></span>
+                    <button class="ascii-modal-close" @click="closeAsciiModal()">✕ CLOSE</button>
+                </div>
+                <div class="ascii-modal-content">
+                    <pre x-text="asciiModal.art"></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- About Modal -->
+        <div 
+            class="ascii-modal-overlay" 
+            x-show="showAbout" 
+            x-transition:enter="transition ease-out duration-200"
+            x-transition:leave="transition ease-in duration-150"
+            @click="showAbout = false"
+            @keydown.escape.window="showAbout = false"
+        >
+            <div class="about-modal" @click.stop>
+                <div class="about-modal-header">
+                    <span class="about-modal-title">📺 About EVOLVE-O-MART</span>
+                    <button class="about-modal-close" @click="showAbout = false">✕ CLOSE</button>
+                </div>
+                <div class="about-modal-content">
+                    <h3>🎯 What Is This?</h3>
+                    <p>EVOLVE-O-MART is a demo showcasing <a href="https://gofastmcp.com" target="_blank">FastMCP</a> - a framework for building AI-powered applications using the Model Context Protocol (MCP).</p>
+                    <p>Products compete for your favorites. The most-favorited product <strong>evolves</strong> using AI, gaining absurd new features!</p>
+
+                    <h3>🛠️ Tech Stack</h3>
+                    <ul>
+                        <li><strong>Frontend:</strong> Alpine.js, vanilla CSS</li>
+                        <li><strong>Backend:</strong> <a href="https://gofastmcp.com" target="_blank">FastMCP</a> (Python)</li>
+                        <li><strong>Storage:</strong> <code>py-key-value-aio</code></li>
+                        <li><strong>AI:</strong> Google Gemini</li>
+                    </ul>
+
+                    <h3>🌐 Hosting</h3>
+                    <ul>
+                        <li><strong>Frontend:</strong> <a href="https://pages.github.com" target="_blank">GitHub Pages</a> - static site hosting</li>
+                        <li><strong>Backend:</strong> <a href="https://prefect.io/horizon" target="_blank">Prefect Horizon</a> - serverless FastMCP hosting</li>
+                    </ul>
+
+                    <h3>🏗️ Architecture</h3>
+                    <div class="arch-diagram">+---------------------------------------+
+|             FRONTEND                  |
+|   Alpine.js + GitHub Pages            |
+|   MCP Client (JSON-RPC over HTTP)     |
++---------------------------------------+
+                    |
+               MCP Protocol
+                    |
+                    v
++---------------------------------------+
+|           FastMCP Server              |
+|   Tools: get_store, view, evolve      |
+|   Resources: store://state            |
++-------------------+-------------------+
+|  Storage          |  AI               |
+|  py-key-value     |  Google Gemini    |
+|  (Disk/ES)        |  (Sampling API)   |
++-------------------+-------------------+</div>
+
+                    <h3>📖 Source Code</h3>
+                    <p>Open source on <a href="https://github.com/jlowin/mcp-shopping-channel" target="_blank">GitHub</a>.</p>
+                </div>
+            </div>
         </div>
 
         <!-- Toast Notification -->
@@ -739,6 +1086,8 @@
                 expandedDescriptions: {},
                 mcpEndpoint: MCP_ENDPOINT,
                 refreshInterval: null,
+                asciiModal: { show: false, name: '', art: '' },
+                showAbout: false,
 
                 // Computed
                 get evolutionProgress() {
@@ -764,6 +1113,19 @@
                 // Toggle description expansion
                 toggleDescription(productId) {
                     this.expandedDescriptions[productId] = !this.expandedDescriptions[productId];
+                },
+
+                // ASCII modal functions
+                openAsciiModal(product) {
+                    this.asciiModal = {
+                        show: true,
+                        name: product.name,
+                        art: product.ascii_art
+                    };
+                },
+
+                closeAsciiModal() {
+                    this.asciiModal.show = false;
                 },
 
                 // Initialize
@@ -882,9 +1244,23 @@
                     return result;
                 },
 
-                // Load store state
+                // Read an MCP resource
+                async readResource(uri) {
+                    const result = await this.mcpRequest('resources/read', {
+                        uri: uri
+                    });
+                    
+                    // Parse the resource response
+                    if (result.contents && result.contents[0] && result.contents[0].text) {
+                        return JSON.parse(result.contents[0].text);
+                    }
+                    
+                    return result;
+                },
+
+                // Load store state via resource (read-only, faster than tool)
                 async loadStore() {
-                    const result = await this.callTool('get_store_state');
+                    const result = await this.readResource('store://state');
                     
                     this.products = result.products || [];
                     this.generation = result.generation ?? 1;
