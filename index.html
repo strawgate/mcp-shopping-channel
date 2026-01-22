@@ -673,21 +673,18 @@
             </div>
         </main>
 
-        <footer>
-            <p>POWERED BY MCP • <a href="https://gofastmcp.com" target="_blank">LEARN MORE</a></p>
-        </footer>
-
-        <!-- Floating Evolution Countdown -->
-        <div class="evolution-countdown" x-show="!loading && votesToEvolve > 0">
-            <div class="countdown-label">⚡ EVOLUTION</div>
-            <div class="countdown-bar">
+        <!-- Floating Bottom Bar -->
+        <div class="evolution-countdown" x-show="!loading">
+            <a href="https://gofastmcp.com" target="_blank" class="powered-by">100% FastMCP</a>
+            <div class="countdown-label" x-show="votesToEvolve > 0">⚡ EVOLUTION</div>
+            <div class="countdown-bar" x-show="votesToEvolve > 0">
                 <div class="countdown-fill" :style="'width: ' + evolutionProgress + '%'"></div>
             </div>
-            <div class="countdown-text" x-show="votesUntilEvolution > 0">
+            <div class="countdown-text" x-show="votesToEvolve > 0 && votesUntilEvolution > 0">
                 <span x-text="votesThisGeneration"></span>/<span x-text="votesToEvolve"></span>
             </div>
             <button 
-                x-show="votesUntilEvolution === 0"
+                x-show="votesToEvolve > 0 && votesUntilEvolution === 0"
                 class="evolve-button"
                 :disabled="evolving"
                 @click.stop.prevent="triggerEvolution()"
@@ -715,7 +712,7 @@
                 return endpoint;
             }
             // Default to localhost for development
-            return 'https://evolve-o-mart.fastmcp.app/mcp';
+            return 'http://127.0.0.1:8000/mcp';
         }
         
         const MCP_ENDPOINT = getMcpEndpoint();

@@ -5,7 +5,7 @@ description = "EVOLVE-O-MART - An MCP-powered evolving product store"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
-    "fastmcp>=2.0",
+    "fastmcp==3.0.0b1",
     "pydantic>=2.0",
     "click>=8.0",
     "py-key-value-aio>=0.3.0",
