@@ -29,6 +29,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Replace localhost with production URL
+        run: |
+          sed -i 's|http://127.0.0.1:8000/mcp|https://evolve-o-mart.fastmcp.app/mcp|g' index.html
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
