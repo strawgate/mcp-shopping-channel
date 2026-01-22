@@ -1083,6 +1083,7 @@
                 evolving: false,
                 showToast: false,
                 toastMessage: '',
+                toastTimeout: null,
                 expandedDescriptions: {},
                 mcpEndpoint: MCP_ENDPOINT,
                 refreshInterval: null,
@@ -1298,9 +1299,10 @@
                             this.votesThisGeneration++;
                             this.votesUntilEvolution = Math.max(0, this.votesUntilEvolution - 1);
                             
-                            // Show toast
+                            // Show toast and auto-evolve if ready
                             if (this.votesUntilEvolution === 0) {
-                                this.toast(`🧬 Evolution ready! ${result.product.name} is the leader!`);
+                                // Auto-trigger evolution (it shows its own toast)
+                                this.triggerEvolution();
                             } else {
                                 this.toast(`Favorited ${result.product.name}! ${this.votesUntilEvolution} more to evolution`);
                             }
@@ -1340,9 +1342,13 @@
 
                 // Show toast notification
                 toast(message, duration = 2000) {
+                    // Clear any pending timeout
+                    if (this.toastTimeout) {
+                        clearTimeout(this.toastTimeout);
+                    }
                     this.toastMessage = message;
                     this.showToast = true;
-                    setTimeout(() => {
+                    this.toastTimeout = setTimeout(() => {
                         this.showToast = false;
                     }, duration);
                 }
