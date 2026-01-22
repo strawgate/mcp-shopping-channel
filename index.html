@@ -320,13 +320,13 @@
 
         .ascii-container {
             background: #000;
-            padding: 1rem;
+            padding: 0.75rem;
             font-family: 'VT323', monospace;
-            line-height: 1.15;
+            line-height: 1.1;
             color: var(--tv-green);
             white-space: pre;
             overflow: hidden;
-            height: 180px;
+            height: 220px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -338,11 +338,11 @@
             transform-origin: center center;
         }
 
-        /* ASCII art size classes */
-        .ascii-container.ascii-xs { font-size: 0.5rem; }
-        .ascii-container.ascii-sm { font-size: 0.6rem; }
-        .ascii-container.ascii-md { font-size: 0.7rem; }
-        .ascii-container.ascii-lg { font-size: 0.85rem; }
+        /* ASCII art size classes - balanced for readability */
+        .ascii-container.ascii-xs { font-size: 0.55rem; line-height: 1.05; }
+        .ascii-container.ascii-sm { font-size: 0.65rem; line-height: 1.08; }
+        .ascii-container.ascii-md { font-size: 0.75rem; }
+        .ascii-container.ascii-lg { font-size: 0.9rem; }
 
         .product-card.is-leader .ascii-container {
             color: var(--tv-yellow);
@@ -738,6 +738,7 @@
                 toastMessage: '',
                 expandedDescriptions: {},
                 mcpEndpoint: MCP_ENDPOINT,
+                refreshInterval: null,
 
                 // Computed
                 get evolutionProgress() {
@@ -750,11 +751,13 @@
                     if (!asciiArt) return 'ascii-lg';
                     const lines = asciiArt.split('\n');
                     const maxWidth = Math.max(...lines.map(line => line.length));
+                    const lineCount = lines.length;
                     
-                    // Adjust size class based on max line width
-                    if (maxWidth > 60) return 'ascii-xs';
-                    if (maxWidth > 45) return 'ascii-sm';
-                    if (maxWidth > 35) return 'ascii-md';
+                    // Consider both width and height of ASCII art
+                    // Use smaller sizes only for really large art
+                    if (maxWidth > 70 || lineCount > 20) return 'ascii-xs';
+                    if (maxWidth > 55 || lineCount > 16) return 'ascii-sm';
+                    if (maxWidth > 40 || lineCount > 12) return 'ascii-md';
                     return 'ascii-lg';
                 },
 
@@ -771,12 +774,32 @@
                     try {
                         await this.initializeMcp();
                         await this.loadStore();
+                        // Start background refresh every 15 seconds
+                        this.startBackgroundRefresh();
                     } catch (err) {
                         console.error('Init error:', err);
                         this.error = err.message || 'Failed to connect to store';
                     } finally {
                         this.loading = false;
                     }
+                },
+
+                // Background refresh to sync with server
+                startBackgroundRefresh() {
+                    // Clear any existing interval
+                    if (this.refreshInterval) {
+                        clearInterval(this.refreshInterval);
+                    }
+                    // Refresh every 15 seconds
+                    this.refreshInterval = setInterval(async () => {
+                        // Don't refresh while user is interacting
+                        if (this.viewingProduct || this.evolving) return;
+                        try {
+                            await this.loadStore();
+                        } catch (err) {
+                            console.warn('Background refresh failed:', err);
+                        }
+                    }, 15000);
                 },
 
                 // MCP JSON-RPC request (handles SSE response from streamable-http transport)
