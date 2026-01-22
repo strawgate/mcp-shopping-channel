@@ -357,6 +357,26 @@ Make it funny but not crude. Parody "as seen on TV" products."""
 
     def add_resources_to_server(self, server: FastMCP) -> None:
         """Register store data as MCP resources."""
-        _ = server.add_resource(Resource.from_function(fn=self.get_state, uri="store://state"))
-        _ = server.add_resource(Resource.from_function(fn=self.get_products, uri="store://products"))
-        _ = server.add_resource(Resource.from_function(fn=self.get_top_product, uri="store://leader"))
+
+        async def get_state_json() -> str:
+            """Get store state as JSON."""
+            state = await self.get_state()
+            return state.model_dump_json()
+
+        async def get_products_json() -> str:
+            """Get all products as JSON."""
+            products = await self.get_products()
+            import json
+
+            return json.dumps([p.model_dump() for p in products])
+
+        async def get_leader_json() -> str:
+            """Get leader product as JSON."""
+            leader = await self.get_top_product()
+            if leader is None:
+                return "null"
+            return leader.model_dump_json()
+
+        _ = server.add_resource(Resource.from_function(fn=get_state_json, uri="store://state"))
+        _ = server.add_resource(Resource.from_function(fn=get_products_json, uri="store://products"))
+        _ = server.add_resource(Resource.from_function(fn=get_leader_json, uri="store://leader"))
