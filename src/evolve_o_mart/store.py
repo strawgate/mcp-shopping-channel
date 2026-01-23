@@ -270,8 +270,9 @@ The winning product from last generation is:
 
 Generate an EVOLVED version that adds one absurd new feature.
 The product should get progressively more ridiculous with each evolution.
+You can subtract features (to prevent bloat) but you must provide an absurd reason for the removal.
 
-Make it funny but not crude. Parody "as seen on TV" products."""
+Make it funny but not crude. Appropriate for a family-friendly audience. Parody "as seen on TV" products. Not too corny."""
 
         result = await ctx.sample(
             messages=prompt,
