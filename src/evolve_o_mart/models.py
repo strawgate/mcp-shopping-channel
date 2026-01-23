@@ -12,7 +12,7 @@ class Product(BaseModel):
     description: str
     ascii_art: str
     version: int = 1
-    views: int = 0
+    favorites: int = 0
     parent_id: str | None = None
     created_at: str = ""
 
@@ -20,10 +20,6 @@ class Product(BaseModel):
 class StoreMetadata(BaseModel):
     """Store metadata (separate from products)."""
 
-    generation: int
-    generation_started_at: str
-    last_winner_id: str | None = None
-    votes_this_generation: int = 0
     product_ids: list[str]
 
 
@@ -43,23 +39,17 @@ class EvolutionResult(BaseModel):
 class StoreState(BaseModel):
     """Full store state returned by get_store."""
 
-    generation: int
-    generation_started_at: str
-    last_winner_id: str | None
-    current_leader_id: str | None
-    votes_this_generation: int
-    votes_until_evolution: int
-    votes_to_evolve: int
+    favorites_to_evolve: int
     products: list[Product]
 
 
-class ViewResult(BaseModel):
-    """Result of viewing/favoriting a product."""
+class FavoriteResult(BaseModel):
+    """Result of favoriting a product."""
 
     success: bool = True
-    product: Product
-    is_leader: bool
+    product: Product | None = None
     message: str
+    ready_to_evolve: bool = False
 
 
 class EvolutionResponse(BaseModel):
@@ -67,15 +57,9 @@ class EvolutionResponse(BaseModel):
 
     success: bool
     message: str
-    generation: int | None = None
     evolved_from: Product | None = None
     evolved_to: Product | None = None
     evolution_note: str | None = None
-    dry_run: bool = False
-    would_evolve: Product | None = None
-    not_ready: bool = False
-    votes_until_evolution: int | None = None
-    votes_to_evolve: int | None = None
 
 
 class ResetResult(BaseModel):
@@ -83,5 +67,4 @@ class ResetResult(BaseModel):
 
     success: bool = True
     message: str
-    generation: int
     products: list[str]

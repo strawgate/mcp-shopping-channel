@@ -7,7 +7,6 @@ from pathlib import Path
 from unittest.mock import MagicMock
 
 import pytest
-from fastmcp import FastMCP
 from key_value.aio.stores.disk.store import DiskStore
 
 from evolve_o_mart.store import Store
@@ -17,17 +16,12 @@ sys.modules["evolve_o_mart.gemini.sampling"] = MagicMock()
 
 
 @pytest.fixture
-def temp_store_with_mcp():
-    """Create a store with a temporary data directory and MCP server."""
+def temp_store():
+    """Create a store with a temporary data directory."""
     temp_dir = Path(tempfile.mkdtemp())
     test_store = Store(DiskStore(directory=temp_dir))
 
-    # Create a test MCP server and register the store
-    test_mcp = FastMCP(name="TestStore")
-    test_store.add_tools_to_server(test_mcp)
-    test_store.add_resources_to_server(test_mcp)
-
-    yield test_store, test_mcp
+    yield test_store
 
     # Cleanup
     if temp_dir.exists():
@@ -35,74 +29,71 @@ def temp_store_with_mcp():
 
 
 @pytest.mark.asyncio
-async def test_get_store_tool(temp_store_with_mcp) -> None:  # noqa: ANN001
-    """Test get_store_state tool returns expected structure."""
-    store, mcp = temp_store_with_mcp
+async def test_get_store_tool(temp_store: Store) -> None:
+    """Test get_state returns expected structure."""
+    result = await temp_store.get_state()
 
-    tool = mcp._tool_manager._tools["get_store_state"]
-    result = await tool.fn()
-
-    assert result.generation == 1
-    assert len(result.products) == 4
-    assert result.current_leader_id is not None
+    assert len(result.products) == 6  # 6 seed products
+    assert result.favorites_to_evolve > 0
 
 
 @pytest.mark.asyncio
-async def test_view_product_tool(temp_store_with_mcp) -> None:  # noqa: ANN001
-    """Test view_product tool increments views."""
-    from evolve_o_mart.models import ViewResult
+async def test_favorite_product_tool(temp_store: Store) -> None:
+    """Test favorite_product increments favorites."""
+    from evolve_o_mart.models import FavoriteResult
 
-    store, mcp = temp_store_with_mcp
+    result = await temp_store.favorite_product(product_id="prod_001")
 
-    view_tool = mcp._tool_manager._tools["view_product"]
-    get_tool = mcp._tool_manager._tools["get_store_state"]
-
-    result = await view_tool.fn(product_id="prod_001")
-
-    assert isinstance(result, ViewResult)
+    assert isinstance(result, FavoriteResult)
     assert result.success is True
-    assert result.product.views == 1
-    assert result.is_leader is True
+    assert result.product is not None
+    assert result.product.favorites == 1
+    assert result.ready_to_evolve is False
 
-    result2 = await view_tool.fn(product_id="prod_001")
-    assert result2.product.views == 2
-
-    store_result = await get_tool.fn()
-    assert store_result.current_leader_id == "prod_001"
-
-
-@pytest.mark.asyncio
-async def test_view_product_not_found(temp_store_with_mcp) -> None:  # noqa: ANN001
-    """Test view_product tool with invalid product ID returns None."""
-    _, mcp = temp_store_with_mcp
-
-    tool = mcp._tool_manager._tools["view_product"]
-    result = await tool.fn(product_id="invalid_id")
-
-    # mark_product_viewed returns None for not found
-    assert result is None
+    result2 = await temp_store.favorite_product(product_id="prod_001")
+    assert result2.product is not None
+    assert result2.product.favorites == 2
 
 
 @pytest.mark.asyncio
-async def test_reset_store_tool(temp_store_with_mcp) -> None:  # noqa: ANN001
-    """Test reset_store tool resets state."""
-    _, mcp = temp_store_with_mcp
+async def test_favorite_product_not_found(temp_store: Store) -> None:
+    """Test favorite_product with invalid product ID returns failure."""
+    result = await temp_store.favorite_product(product_id="invalid_id")
 
-    view_tool = mcp._tool_manager._tools["view_product"]
-    get_tool = mcp._tool_manager._tools["get_store_state"]
-    reset_tool = mcp._tool_manager._tools["reset_store"]
+    assert result.success is False
 
-    await view_tool.fn(product_id="prod_001")
-    await view_tool.fn(product_id="prod_001")
 
-    store_result = await get_tool.fn()
+@pytest.mark.asyncio
+async def test_reset_store_tool(temp_store: Store) -> None:
+    """Test reset resets state."""
+    _ = await temp_store.favorite_product(product_id="prod_001")
+    _ = await temp_store.favorite_product(product_id="prod_001")
+
+    store_result = await temp_store.get_state()
     prod = next(p for p in store_result.products if p.id == "prod_001")
-    assert prod.views == 2
+    assert prod.favorites == 2
 
-    result = await reset_tool.fn()
+    result = await temp_store.tool_reset_store()
 
     assert result.success is True
-    assert result.generation == 1
 
-    store2 = await get_tool.fn()
-    assert all(p.views == 0 for p in store2.products)
+    store2 = await temp_store.get_state()
+    assert all(p.favorites == 0 for p in store2.products)
+
+
+@pytest.mark.asyncio
+async def test_favorite_product_ready_to_evolve(temp_store: Store) -> None:
+    """Test that favorite_product reports ready_to_evolve when threshold reached."""
+    from evolve_o_mart.store import FAVORITES_TO_EVOLVE
+
+    # Favorite until one short of threshold
+    for _ in range(FAVORITES_TO_EVOLVE - 1):
+        result = await temp_store.favorite_product(product_id="prod_001")
+        assert result.ready_to_evolve is False
+        assert result.product is not None
+
+    # Final favorite should trigger ready_to_evolve
+    result = await temp_store.favorite_product(product_id="prod_001")
+    assert result.ready_to_evolve is True
+    assert result.product is not None
+    assert result.product.favorites == FAVORITES_TO_EVOLVE

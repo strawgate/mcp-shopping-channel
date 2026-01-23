@@ -14,7 +14,7 @@
                     v
 +---------------------------------------+
 |           FastMCP Server              |
-|   Tools: get_store, view, evolve      |
+|   Tools: favorite, evolve, reset      |
 |   Resources: store://state            |
 +-------------------+-------------------+
 |  Storage          |  AI               |
@@ -44,8 +44,8 @@ mcp-shopping-channel/
 | Tool | Purpose |
 |------|---------|
 | `get_store_state` | Get all products and store state |
-| `view_product(product_id)` | Record a favorite |
-| `evolve(dry_run?)` | Evolve the winning product |
+| `favorite_product(product_id)` | Add a favorite to a product |
+| `evolve(product_id)` | Evolve a specific product |
 | `reset_store` | Reset to initial state |
 
 ## MCP Resources

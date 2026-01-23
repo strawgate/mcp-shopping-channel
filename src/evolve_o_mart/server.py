@@ -1,6 +1,6 @@
 """EVOLVE-O-MART™ - MCP Server.
 
-A store where products compete for favorites. The most-favorited product evolves each generation.
+A store where products compete for favorites. Each product evolves after enough favorites.
 
 Usage:
     uv run evolve-o-mart serve              # Run MCP server (stdio)
@@ -9,7 +9,7 @@ Usage:
 Environment Variables:
     CORS_ORIGINS: Comma-separated list of allowed origins (default: "*")
     GOOGLE_API_KEY: Google Gemini API key for evolution
-    VOTES_TO_EVOLVE: Number of favorites to trigger evolution (default: 20)
+    FAVORITES_TO_EVOLVE: Number of favorites per product to trigger evolution (default: 5)
 """
 
 import logging
@@ -49,11 +49,11 @@ mcp = FastMCP(
 
 Tools:
 - get_store_state: Get all products and store state
-- view_product: Record a favorite for a product
-- evolve: Evolve the most-favorited product
+- favorite_product: Add a favorite to a product
+- evolve: Evolve a specific product (requires enough favorites)
 - reset_store: Reset to initial seed products
 
-The product with the most favorites gets evolved each generation.
+Each product evolves independently after reaching the favorites threshold.
 """,
     sampling_handler=sampling_handler,
     sampling_handler_behavior="always",

@@ -85,6 +85,12 @@ ignore = [
     "PLR2004",
     "INP001",
 ]
+"src/evolve_o_mart/gemini/sampling.py" = [
+    "TRY003", "EM101", "D107", "D102", "ARG002", "PERF401",
+]
+"src/evolve_o_mart/storage/elasticsearch.py" = [
+    "D103",
+]
 
 [tool.basedpyright]
 pythonVersion = "3.12"

@@ -12,12 +12,12 @@ def test_product_model() -> None:
         description="Test description",
         ascii_art="[art]",
         version=1,
-        views=0,
+        favorites=0,
         created_at="2024-01-01T00:00:00Z",
     )
     assert product.id == "prod_001"
     assert product.name == "Test Product"
-    assert product.views == 0
+    assert product.favorites == 0
     assert product.parent_id is None
 
 
@@ -30,7 +30,7 @@ def test_product_with_parent() -> None:
         description="Evolved description",
         ascii_art="[evolved art]",
         version=2,
-        views=5,
+        favorites=5,
         parent_id="prod_001",
         created_at="2024-01-02T00:00:00Z",
     )
@@ -41,13 +41,8 @@ def test_product_with_parent() -> None:
 def test_store_metadata_model() -> None:
     """Test StoreMetadata model creation."""
     metadata = StoreMetadata(
-        generation=1,
-        generation_started_at="2024-01-01T00:00:00Z",
         product_ids=["prod_001", "prod_002"],
     )
-    assert metadata.generation == 1
-    assert metadata.last_winner_id is None
-    assert metadata.votes_this_generation == 0
     assert len(metadata.product_ids) == 2
 
 

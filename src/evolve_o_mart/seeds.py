@@ -72,7 +72,10 @@ SEED_PRODUCTS: list[Product] = [
         id="prod_005",
         name="Procrastination Clock",
         tagline="There's always tomorrow.",
-        description="A clock that's perpetually 5 minutes behind schedule. Not broken—just not ready yet. Will sync up eventually. Probably.",
+        description=(
+            "A clock that's perpetually 5 minutes behind schedule. "
+            "Not broken—just not ready yet. Will sync up eventually. Probably."
+        ),
         ascii_art=r"""
       .---.
      /     \
@@ -88,7 +91,10 @@ SEED_PRODUCTS: list[Product] = [
         id="prod_006",
         name="Existential Sponge",
         tagline="Absorbs liquids and meaning.",
-        description="A sponge that quietly questions its purpose while cleaning. 'Am I removing dirt, or am I the dirt?' it wonders. Still works great on dishes.",
+        description=(
+            "A sponge that quietly questions its purpose while cleaning. "
+            "'Am I removing dirt, or am I the dirt?' it wonders. Still works great on dishes."
+        ),
         ascii_art=r"""
     .--------.
    /  why?   /|
